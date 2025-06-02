@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Matrix Has You - Pure CSS</title>
+    
+    <style>
+        /* ========================================
+           RESET AND BASE
+           ======================================== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: #000;
+            color: #0F0;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+            perspective: 800px;
+        }
+
+        input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ========================================
+           WORLD CONTAINER - THE CORE
+           ======================================== */
+        
+        .world {
+            position: absolute;
+            width: 200vw;
+            height: 200vh;
+            left: -50vw;
+            top: -50vh;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* ========================================
+           RAIN SYSTEM - TRULY 3D
+           ======================================== */
+        
+        .rain-field {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        /* Create a massive 3D rain field */
+        .rain-column {
+            position: absolute;
+            font-size: 20px;
+            line-height: 1.2;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            color: #0F0;
+            text-shadow: 0 0 5px #0F0;
+            transform-style: preserve-3d;
+            animation: rain-fall linear infinite;
+        }
+
+        .rain-column::before {
+            content: "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ012345789Z:・.=*+-<>¦｜╌";
+        }
+
+        @keyframes rain-fall {
+            from {
+                transform: translateY(-100vh);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Generate rain in a 3D grid pattern */
+        .rain-column:nth-child(1) { left: 10%; top: 0; transform: translateZ(-500px); animation-duration: 4s; animation-delay: 0s; opacity: 0.6; font-size: 16px; }
+        .rain-column:nth-child(2) { left: 15%; top: 0; transform: translateZ(-400px); animation-duration: 3.5s; animation-delay: 0.5s; opacity: 0.7; font-size: 17px; }
+        .rain-column:nth-child(3) { left: 20%; top: 0; transform: translateZ(-300px); animation-duration: 3s; animation-delay: 1s; opacity: 0.8; font-size: 18px; }
+        .rain-column:nth-child(4) { left: 25%; top: 0; transform: translateZ(-200px); animation-duration: 2.8s; animation-delay: 0.3s; opacity: 0.9; font-size: 19px; }
+        .rain-column:nth-child(5) { left: 30%; top: 0; transform: translateZ(-100px); animation-duration: 2.5s; animation-delay: 0.7s; opacity: 1; font-size: 20px; }
+        .rain-column:nth-child(6) { left: 35%; top: 0; transform: translateZ(0px); animation-duration: 3s; animation-delay: 0.2s; opacity: 1; font-size: 22px; }
+        .rain-column:nth-child(7) { left: 40%; top: 0; transform: translateZ(100px); animation-duration: 2.7s; animation-delay: 0.9s; opacity: 1; font-size: 24px; }
+        .rain-column:nth-child(8) { left: 45%; top: 0; transform: translateZ(200px); animation-duration: 3.2s; animation-delay: 0.4s; opacity: 0.9; font-size: 23px; }
+        .rain-column:nth-child(9) { left: 50%; top: 0; transform: translateZ(300px); animation-duration: 3.5s; animation-delay: 0.6s; opacity: 0.8; font-size: 22px; }
+        .rain-column:nth-child(10) { left: 55%; top: 0; transform: translateZ(400px); animation-duration: 4s; animation-delay: 0.1s; opacity: 0.7; font-size: 21px; }
+        .rain-column:nth-child(11) { left: 60%; top: 0; transform: translateZ(500px); animation-duration: 4.5s; animation-delay: 0.8s; opacity: 0.6; font-size: 20px; }
+        .rain-column:nth-child(12) { left: 65%; top: 0; transform: translateZ(-450px); animation-duration: 3.8s; animation-delay: 0.3s; opacity: 0.65; font-size: 18px; }
+        .rain-column:nth-child(13) { left: 70%; top: 0; transform: translateZ(-350px); animation-duration: 3.3s; animation-delay: 0.5s; opacity: 0.75; font-size: 19px; }
+        .rain-column:nth-child(14) { left: 75%; top: 0; transform: translateZ(-250px); animation-duration: 2.9s; animation-delay: 0.7s; opacity: 0.85; font-size: 20px; }
+        .rain-column:nth-child(15) { left: 80%; top: 0; transform: translateZ(-150px); animation-duration: 2.6s; animation-delay: 0.2s; opacity: 0.95; font-size: 21px; }
+        .rain-column:nth-child(16) { left: 85%; top: 0; transform: translateZ(-50px); animation-duration: 3.1s; animation-delay: 0.9s; opacity: 1; font-size: 22px; }
+        .rain-column:nth-child(17) { left: 90%; top: 0; transform: translateZ(50px); animation-duration: 2.8s; animation-delay: 0.4s; opacity: 1; font-size: 23px; }
+        .rain-column:nth-child(18) { left: 95%; top: 0; transform: translateZ(150px); animation-duration: 3.4s; animation-delay: 0.6s; opacity: 0.95; font-size: 22px; }
+        .rain-column:nth-child(19) { left: 5%; top: 0; transform: translateZ(250px); animation-duration: 3.7s; animation-delay: 0.1s; opacity: 0.85; font-size: 21px; }
+        .rain-column:nth-child(20) { left: 12%; top: 0; transform: translateZ(350px); animation-duration: 4.2s; animation-delay: 0.8s; opacity: 0.75; font-size: 20px; }
+        
+        /* Additional rain columns spread throughout 3D space */
+        .rain-column:nth-child(21) { left: 18%; top: 0; transform: translateZ(-480px) translateX(100px); animation-duration: 3.9s; animation-delay: 0.3s; opacity: 0.6; font-size: 17px; }
+        .rain-column:nth-child(22) { left: 22%; top: 0; transform: translateZ(-380px) translateX(80px); animation-duration: 3.4s; animation-delay: 0.5s; opacity: 0.7; font-size: 18px; }
+        .rain-column:nth-child(23) { left: 28%; top: 0; transform: translateZ(-280px) translateX(60px); animation-duration: 3s; animation-delay: 0.7s; opacity: 0.8; font-size: 19px; }
+        .rain-column:nth-child(24) { left: 32%; top: 0; transform: translateZ(-180px) translateX(40px); animation-duration: 2.7s; animation-delay: 0.2s; opacity: 0.9; font-size: 20px; }
+        .rain-column:nth-child(25) { left: 38%; top: 0; transform: translateZ(-80px) translateX(20px); animation-duration: 2.5s; animation-delay: 0.9s; opacity: 1; font-size: 21px; }
+        .rain-column:nth-child(26) { left: 42%; top: 0; transform: translateZ(20px) translateX(-20px); animation-duration: 3s; animation-delay: 0.4s; opacity: 1; font-size: 22px; }
+        .rain-column:nth-child(27) { left: 48%; top: 0; transform: translateZ(120px) translateX(-40px); animation-duration: 2.8s; animation-delay: 0.6s; opacity: 1; font-size: 23px; }
+        .rain-column:nth-child(28) { left: 52%; top: 0; transform: translateZ(220px) translateX(-60px); animation-duration: 3.3s; animation-delay: 0.1s; opacity: 0.9; font-size: 22px; }
+        .rain-column:nth-child(29) { left: 58%; top: 0; transform: translateZ(320px) translateX(-80px); animation-duration: 3.6s; animation-delay: 0.8s; opacity: 0.8; font-size: 21px; }
+        .rain-column:nth-child(30) { left: 62%; top: 0; transform: translateZ(420px) translateX(-100px); animation-duration: 4.1s; animation-delay: 0.3s; opacity: 0.7; font-size: 20px; }
+        
+        /* Even more rain for depth */
+        .rain-column:nth-child(31) { left: 68%; top: 0; transform: translateZ(-520px) translateX(120px); animation-duration: 4.3s; animation-delay: 0.5s; opacity: 0.5; font-size: 16px; }
+        .rain-column:nth-child(32) { left: 72%; top: 0; transform: translateZ(-420px) translateX(100px); animation-duration: 3.8s; animation-delay: 0.7s; opacity: 0.6; font-size: 17px; }
+        .rain-column:nth-child(33) { left: 78%; top: 0; transform: translateZ(-320px) translateX(80px); animation-duration: 3.3s; animation-delay: 0.2s; opacity: 0.7; font-size: 18px; }
+        .rain-column:nth-child(34) { left: 82%; top: 0; transform: translateZ(-220px) translateX(60px); animation-duration: 2.9s; animation-delay: 0.9s; opacity: 0.8; font-size: 19px; }
+        .rain-column:nth-child(35) { left: 88%; top: 0; transform: translateZ(-120px) translateX(40px); animation-duration: 2.6s; animation-delay: 0.4s; opacity: 0.9; font-size: 20px; }
+        .rain-column:nth-child(36) { left: 92%; top: 0; transform: translateZ(-20px) translateX(20px); animation-duration: 3.1s; animation-delay: 0.6s; opacity: 1; font-size: 21px; }
+        .rain-column:nth-child(37) { left: 8%; top: 0; transform: translateZ(80px) translateX(-20px); animation-duration: 2.8s; animation-delay: 0.1s; opacity: 1; font-size: 22px; }
+        .rain-column:nth-child(38) { left: 14%; top: 0; transform: translateZ(180px) translateX(-40px); animation-duration: 3.4s; animation-delay: 0.8s; opacity: 0.95; font-size: 21px; }
+        .rain-column:nth-child(39) { left: 24%; top: 0; transform: translateZ(280px) translateX(-60px); animation-duration: 3.7s; animation-delay: 0.3s; opacity: 0.85; font-size: 20px; }
+        .rain-column:nth-child(40) { left: 34%; top: 0; transform: translateZ(380px) translateX(-80px); animation-duration: 4.2s; animation-delay: 0.5s; opacity: 0.75; font-size: 19px; }
+        
+        /* Create depth with blur */
+        .rain-column {
+            filter: blur(calc(abs(var(--z-depth, 0)) * 0.002px));
+        }
+
+        /* ========================================
+           NAVIGATION FLOOR - IMPROVED
+           ======================================== */
+        
+        .floor {
+            position: absolute;
+            bottom: -20vh;
+            left: 50%;
+            transform: translateX(-50%) rotateX(80deg);
+            width: 120vw;
+            height: 80vh;
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-template-rows: repeat(9, 1fr);
+            gap: 10px;
+            transform-style: preserve-3d;
+            z-index: 100;
+        }
+
+        .floor-tile {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            transform: translateZ(0);
+        }
+
+        .floor-tile:hover {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.8);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.8),
+                inset 0 0 20px rgba(0, 255, 0, 0.3);
+            transform: translateZ(10px);
+        }
+
+        /* ========================================
+           MOVEMENT SYSTEM - FIXED
+           ======================================== */
+        
+        /* Center position */
+        #pos-4-4:checked ~ .world {
+            transform: translate3d(0, 0, 0);
+        }
+
+        /* Forward movement */
+        #pos-4-3:checked ~ .world {
+            transform: translate3d(0, 100px, 200px) rotateX(-5deg);
+        }
+
+        #pos-4-2:checked ~ .world {
+            transform: translate3d(0, 200px, 400px) rotateX(-10deg);
+        }
+
+        #pos-4-1:checked ~ .world {
+            transform: translate3d(0, 300px, 600px) rotateX(-15deg);
+        }
+
+        #pos-4-0:checked ~ .world {
+            transform: translate3d(0, 400px, 800px) rotateX(-20deg);
+        }
+
+        /* Backward movement */
+        #pos-4-5:checked ~ .world {
+            transform: translate3d(0, -100px, -200px) rotateX(5deg);
+        }
+
+        #pos-4-6:checked ~ .world {
+            transform: translate3d(0, -200px, -400px) rotateX(10deg);
+        }
+
+        /* Left movement */
+        #pos-3-4:checked ~ .world {
+            transform: translate3d(200px, 0, 0) rotateY(5deg);
+        }
+
+        #pos-2-4:checked ~ .world {
+            transform: translate3d(400px, 0, 0) rotateY(10deg);
+        }
+
+        #pos-1-4:checked ~ .world {
+            transform: translate3d(600px, 0, 0) rotateY(15deg);
+        }
+
+        /* Right movement */
+        #pos-5-4:checked ~ .world {
+            transform: translate3d(-200px, 0, 0) rotateY(-5deg);
+        }
+
+        #pos-6-4:checked ~ .world {
+            transform: translate3d(-400px, 0, 0) rotateY(-10deg);
+        }
+
+        #pos-7-4:checked ~ .world {
+            transform: translate3d(-600px, 0, 0) rotateY(-15deg);
+        }
+
+        /* Diagonal movements */
+        #pos-3-3:checked ~ .world {
+            transform: translate3d(200px, 100px, 200px) rotateX(-5deg) rotateY(5deg);
+        }
+
+        #pos-5-3:checked ~ .world {
+            transform: translate3d(-200px, 100px, 200px) rotateX(-5deg) rotateY(-5deg);
+        }
+
+        #pos-3-5:checked ~ .world {
+            transform: translate3d(200px, -100px, -200px) rotateX(5deg) rotateY(5deg);
+        }
+
+        #pos-5-5:checked ~ .world {
+            transform: translate3d(-200px, -100px, -200px) rotateX(5deg) rotateY(-5deg);
+        }
+
+        /* ========================================
+           PHONE BOOTH - SIMPLIFIED
+           ======================================== */
+        
+        .phone-booth {
+            position: absolute;
+            width: 100px;
+            height: 200px;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%) translateZ(1000px);
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #0F0;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 0, 0.5),
+                inset 0 0 50px rgba(0, 255, 0, 0.1);
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        #pos-4-0:checked ~ .world .phone-booth {
+            opacity: 1;
+        }
+
+        .phone {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            animation: ring 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes ring {
+            from { transform: translate(-50%, -50%) rotate(-5deg); }
+            to { transform: translate(-50%, -50%) rotate(5deg); }
+        }
+
+        /* ========================================
+           UI - MINIMAL
+           ======================================== */
+        
+        .message {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 24px;
+            color: #0F0;
+            text-shadow: 0 0 10px #0F0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .message-sub {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        /* ========================================
+           3D STRUCTURES
+           ======================================== */
+        
+        .structure {
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+
+        .pillar {
+            width: 100px;
+            height: 500px;
+            background: linear-gradient(to bottom, 
+                rgba(0, 50, 0, 0.8), 
+                rgba(0, 20, 0, 0.9));
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            transform-style: preserve-3d;
+        }
+
+        .pillar:nth-child(1) {
+            left: 20%;
+            top: 20%;
+            transform: translateZ(-200px);
+        }
+
+        .pillar:nth-child(2) {
+            left: 80%;
+            top: 20%;
+            transform: translateZ(-200px);
+        }
+
+        .pillar:nth-child(3) {
+            left: 20%;
+            top: 20%;
+            transform: translateZ(200px);
+        }
+
+        .pillar:nth-child(4) {
+            left: 80%;
+            top: 20%;
+            transform: translateZ(200px);
+        }
+
+        /* ========================================
+           FOG EFFECT
+           ======================================== */
+        
+        .fog {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            top: -50%;
+            background: radial-gradient(
+                ellipse at center,
+                transparent 0%,
+                transparent 40%,
+                rgba(0, 20, 0, 0.3) 80%,
+                rgba(0, 0, 0, 0.8) 100%
+            );
+            pointer-events: none;
+            z-index: 500;
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            .floor {
+                grid-template-columns: repeat(7, 1fr);
+                grid-template-rows: repeat(7, 1fr);
+            }
+            
+            .rain-column:nth-child(n+25) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation inputs -->
+    <input type="radio" name="pos" id="pos-0-0">
+    <input type="radio" name="pos" id="pos-1-0">
+    <input type="radio" name="pos" id="pos-2-0">
+    <input type="radio" name="pos" id="pos-3-0">
+    <input type="radio" name="pos" id="pos-4-0">
+    <input type="radio" name="pos" id="pos-5-0">
+    <input type="radio" name="pos" id="pos-6-0">
+    <input type="radio" name="pos" id="pos-7-0">
+    <input type="radio" name="pos" id="pos-8-0">
+    
+    <input type="radio" name="pos" id="pos-0-1">
+    <input type="radio" name="pos" id="pos-1-1">
+    <input type="radio" name="pos" id="pos-2-1">
+    <input type="radio" name="pos" id="pos-3-1">
+    <input type="radio" name="pos" id="pos-4-1">
+    <input type="radio" name="pos" id="pos-5-1">
+    <input type="radio" name="pos" id="pos-6-1">
+    <input type="radio" name="pos" id="pos-7-1">
+    <input type="radio" name="pos" id="pos-8-1">
+    
+    <input type="radio" name="pos" id="pos-0-2">
+    <input type="radio" name="pos" id="pos-1-2">
+    <input type="radio" name="pos" id="pos-2-2">
+    <input type="radio" name="pos" id="pos-3-2">
+    <input type="radio" name="pos" id="pos-4-2">
+    <input type="radio" name="pos" id="pos-5-2">
+    <input type="radio" name="pos" id="pos-6-2">
+    <input type="radio" name="pos" id="pos-7-2">
+    <input type="radio" name="pos" id="pos-8-2">
+    
+    <input type="radio" name="pos" id="pos-0-3">
+    <input type="radio" name="pos" id="pos-1-3">
+    <input type="radio" name="pos" id="pos-2-3">
+    <input type="radio" name="pos" id="pos-3-3">
+    <input type="radio" name="pos" id="pos-4-3">
+    <input type="radio" name="pos" id="pos-5-3">
+    <input type="radio" name="pos" id="pos-6-3">
+    <input type="radio" name="pos" id="pos-7-3">
+    <input type="radio" name="pos" id="pos-8-3">
+    
+    <input type="radio" name="pos" id="pos-0-4">
+    <input type="radio" name="pos" id="pos-1-4">
+    <input type="radio" name="pos" id="pos-2-4">
+    <input type="radio" name="pos" id="pos-3-4">
+    <input type="radio" name="pos" id="pos-4-4" checked>
+    <input type="radio" name="pos" id="pos-5-4">
+    <input type="radio" name="pos" id="pos-6-4">
+    <input type="radio" name="pos" id="pos-7-4">
+    <input type="radio" name="pos" id="pos-8-4">
+    
+    <input type="radio" name="pos" id="pos-0-5">
+    <input type="radio" name="pos" id="pos-1-5">
+    <input type="radio" name="pos" id="pos-2-5">
+    <input type="radio" name="pos" id="pos-3-5">
+    <input type="radio" name="pos" id="pos-4-5">
+    <input type="radio" name="pos" id="pos-5-5">
+    <input type="radio" name="pos" id="pos-6-5">
+    <input type="radio" name="pos" id="pos-7-5">
+    <input type="radio" name="pos" id="pos-8-5">
+    
+    <input type="radio" name="pos" id="pos-0-6">
+    <input type="radio" name="pos" id="pos-1-6">
+    <input type="radio" name="pos" id="pos-2-6">
+    <input type="radio" name="pos" id="pos-3-6">
+    <input type="radio" name="pos" id="pos-4-6">
+    <input type="radio" name="pos" id="pos-5-6">
+    <input type="radio" name="pos" id="pos-6-6">
+    <input type="radio" name="pos" id="pos-7-6">
+    <input type="radio" name="pos" id="pos-8-6">
+
+    <!-- Message -->
+    <div class="message">
+        The Matrix has you...
+        <div class="message-sub">Follow the white rabbit</div>
+    </div>
+
+    <!-- The World -->
+    <div class="world">
+        <!-- Rain Field -->
+        <div class="rain-field">
+            <div class="rain-column" style="--z-depth: -500;"></div>
+            <div class="rain-column" style="--z-depth: -400;"></div>
+            <div class="rain-column" style="--z-depth: -300;"></div>
+            <div class="rain-column" style="--z-depth: -200;"></div>
+            <div class="rain-column" style="--z-depth: -100;"></div>
+            <div class="rain-column" style="--z-depth: 0;"></div>
+            <div class="rain-column" style="--z-depth: 100;"></div>
+            <div class="rain-column" style="--z-depth: 200;"></div>
+            <div class="rain-column" style="--z-depth: 300;"></div>
+            <div class="rain-column" style="--z-depth: 400;"></div>
+            <div class="rain-column" style="--z-depth: 500;"></div>
+            <div class="rain-column" style="--z-depth: -450;"></div>
+            <div class="rain-column" style="--z-depth: -350;"></div>
+            <div class="rain-column" style="--z-depth: -250;"></div>
+            <div class="rain-column" style="--z-depth: -150;"></div>
+            <div class="rain-column" style="--z-depth: -50;"></div>
+            <div class="rain-column" style="--z-depth: 50;"></div>
+            <div class="rain-column" style="--z-depth: 150;"></div>
+            <div class="rain-column" style="--z-depth: 250;"></div>
+            <div class="rain-column" style="--z-depth: 350;"></div>
+            <div class="rain-column" style="--z-depth: -480;"></div>
+            <div class="rain-column" style="--z-depth: -380;"></div>
+            <div class="rain-column" style="--z-depth: -280;"></div>
+            <div class="rain-column" style="--z-depth: -180;"></div>
+            <div class="rain-column" style="--z-depth: -80;"></div>
+            <div class="rain-column" style="--z-depth: 20;"></div>
+            <div class="rain-column" style="--z-depth: 120;"></div>
+            <div class="rain-column" style="--z-depth: 220;"></div>
+            <div class="rain-column" style="--z-depth: 320;"></div>
+            <div class="rain-column" style="--z-depth: 420;"></div>
+            <div class="rain-column" style="--z-depth: -520;"></div>
+            <div class="rain-column" style="--z-depth: -420;"></div>
+            <div class="rain-column" style="--z-depth: -320;"></div>
+            <div class="rain-column" style="--z-depth: -220;"></div>
+            <div class="rain-column" style="--z-depth: -120;"></div>
+            <div class="rain-column" style="--z-depth: -20;"></div>
+            <div class="rain-column" style="--z-depth: 80;"></div>
+            <div class="rain-column" style="--z-depth: 180;"></div>
+            <div class="rain-column" style="--z-depth: 280;"></div>
+            <div class="rain-column" style="--z-depth: 380;"></div>
+        </div>
+
+        <!-- 3D Structures -->
+        <div class="structure pillar"></div>
+        <div class="structure pillar"></div>
+        <div class="structure pillar"></div>
+        <div class="structure pillar"></div>
+
+        <!-- Phone Booth -->
+        <div class="phone-booth">
+            <div class="phone">☎</div>
+        </div>
+
+        <!-- Navigation Floor -->
+        <div class="floor">
+            <label for="pos-0-0" class="floor-tile"></label>
+            <label for="pos-1-0" class="floor-tile"></label>
+            <label for="pos-2-0" class="floor-tile"></label>
+            <label for="pos-3-0" class="floor-tile"></label>
+            <label for="pos-4-0" class="floor-tile"></label>
+            <label for="pos-5-0" class="floor-tile"></label>
+            <label for="pos-6-0" class="floor-tile"></label>
+            <label for="pos-7-0" class="floor-tile"></label>
+            <label for="pos-8-0" class="floor-tile"></label>
+            
+            <label for="pos-0-1" class="floor-tile"></label>
+            <label for="pos-1-1" class="floor-tile"></label>
+            <label for="pos-2-1" class="floor-tile"></label>
+            <label for="pos-3-1" class="floor-tile"></label>
+            <label for="pos-4-1" class="floor-tile"></label>
+            <label for="pos-5-1" class="floor-tile"></label>
+            <label for="pos-6-1" class="floor-tile"></label>
+            <label for="pos-7-1" class="floor-tile"></label>
+            <label for="pos-8-1" class="floor-tile"></label>
+            
+            <label for="pos-0-2" class="floor-tile"></label>
+            <label for="pos-1-2" class="floor-tile"></label>
+            <label for="pos-2-2" class="floor-tile"></label>
+            <label for="pos-3-2" class="floor-tile"></label>
+            <label for="pos-4-2" class="floor-tile"></label>
+            <label for="pos-5-2" class="floor-tile"></label>
+            <label for="pos-6-2" class="floor-tile"></label>
+            <label for="pos-7-2" class="floor-tile"></label>
+            <label for="pos-8-2" class="floor-tile"></label>
+            
+            <label for="pos-0-3" class="floor-tile"></label>
+            <label for="pos-1-3" class="floor-tile"></label>
+            <label for="pos-2-3" class="floor-tile"></label>
+            <label for="pos-3-3" class="floor-tile"></label>
+            <label for="pos-4-3" class="floor-tile"></label>
+            <label for="pos-5-3" class="floor-tile"></label>
+            <label for="pos-6-3" class="floor-tile"></label>
+            <label for="pos-7-3" class="floor-tile"></label>
+            <label for="pos-8-3" class="floor-tile"></label>
+            
+            <label for="pos-0-4" class="floor-tile"></label>
+            <label for="pos-1-4" class="floor-tile"></label>
+            <label for="pos-2-4" class="floor-tile"></label>
+            <label for="pos-3-4" class="floor-tile"></label>
+            <label for="pos-4-4" class="floor-tile"></label>
+            <label for="pos-5-4" class="floor-tile"></label>
+            <label for="pos-6-4" class="floor-tile"></label>
+            <label for="pos-7-4" class="floor-tile"></label>
+            <label for="pos-8-4" class="floor-tile"></label>
+            
+            <label for="pos-0-5" class="floor-tile"></label>
+            <label for="pos-1-5" class="floor-tile"></label>
+            <label for="pos-2-5" class="floor-tile"></label>
+            <label for="pos-3-5" class="floor-tile"></label>
+            <label for="pos-4-5" class="floor-tile"></label>
+            <label for="pos-5-5" class="floor-tile"></label>
+            <label for="pos-6-5" class="floor-tile"></label>
+            <label for="pos-7-5" class="floor-tile"></label>
+            <label for="pos-8-5" class="floor-tile"></label>
+            
+            <label for="pos-0-6" class="floor-tile"></label>
+            <label for="pos-1-6" class="floor-tile"></label>
+            <label for="pos-2-6" class="floor-tile"></label>
+            <label for="pos-3-6" class="floor-tile"></label>
+            <label for="pos-4-6" class="floor-tile"></label>
+            <label for="pos-5-6" class="floor-tile"></label>
+            <label for="pos-6-6" class="floor-tile"></label>
+            <label for="pos-7-6" class="floor-tile"></label>
+            <label for="pos-8-6" class="floor-tile"></label>
+        </div>
+    </div>
+
+    <!-- Fog overlay -->
+    <div class="fog"></div>
+</body>
+</html>
