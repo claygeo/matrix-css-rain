@@ -136,42 +136,88 @@
         }
 
         /* ========================================
-           NAVIGATION FLOOR - IMPROVED
+           NAVIGATION FLOOR - VISIBLE AND CLICKABLE
            ======================================== */
         
         .floor {
-            position: absolute;
-            bottom: -20vh;
+            position: fixed;
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%) rotateX(80deg);
-            width: 120vw;
-            height: 80vh;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 400px;
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             grid-template-rows: repeat(9, 1fr);
-            gap: 10px;
-            transform-style: preserve-3d;
-            z-index: 100;
+            gap: 5px;
+            perspective: 800px;
+            z-index: 1000;
         }
 
         .floor-tile {
             display: block;
             width: 100%;
             height: 100%;
-            background: rgba(0, 255, 0, 0.05);
-            border: 1px solid rgba(0, 255, 0, 0.2);
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid rgba(0, 255, 0, 0.4);
             cursor: pointer;
             transition: all 0.3s;
-            transform: translateZ(0);
+            position: relative;
+            transform: rotateX(45deg);
+            transform-style: preserve-3d;
         }
 
         .floor-tile:hover {
-            background: rgba(0, 255, 0, 0.2);
-            border-color: rgba(0, 255, 0, 0.8);
+            background: rgba(0, 255, 0, 0.3);
+            border-color: #0F0;
             box-shadow: 
-                0 0 20px rgba(0, 255, 0, 0.8),
-                inset 0 0 20px rgba(0, 255, 0, 0.3);
-            transform: translateZ(10px);
+                0 0 20px #0F0,
+                inset 0 0 20px rgba(0, 255, 0, 0.5);
+            transform: rotateX(45deg) translateZ(10px) scale(1.1);
+        }
+
+        /* Highlight center tile */
+        .floor-tile:nth-child(41) {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.6);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        /* Add visual indicators for movement directions */
+        .floor-tile:nth-child(32)::after, /* Forward */
+        .floor-tile:nth-child(50)::after, /* Back */
+        .floor-tile:nth-child(40)::after, /* Left */
+        .floor-tile:nth-child(42)::after  /* Right */ {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            opacity: 0.6;
+        }
+
+        /* Arrow directions */
+        .floor-tile:nth-child(32)::after { /* Up arrow */
+            border-width: 0 10px 15px 10px;
+            border-color: transparent transparent #0F0 transparent;
+        }
+
+        .floor-tile:nth-child(50)::after { /* Down arrow */
+            border-width: 15px 10px 0 10px;
+            border-color: #0F0 transparent transparent transparent;
+        }
+
+        .floor-tile:nth-child(40)::after { /* Left arrow */
+            border-width: 10px 15px 10px 0;
+            border-color: transparent #0F0 transparent transparent;
+        }
+
+        .floor-tile:nth-child(42)::after { /* Right arrow */
+            border-width: 10px 0 10px 15px;
+            border-color: transparent transparent transparent #0F0;
         }
 
         /* ========================================
@@ -291,7 +337,7 @@
         }
 
         /* ========================================
-           UI - MINIMAL
+           UI - ENHANCED
            ======================================== */
         
         .message {
@@ -311,6 +357,20 @@
             font-size: 14px;
             opacity: 0.7;
             margin-top: 10px;
+        }
+
+        /* Instructions */
+        .instructions {
+            position: fixed;
+            bottom: 430px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #0F0;
+            font-size: 16px;
+            opacity: 0.8;
+            text-shadow: 0 0 5px #0F0;
+            z-index: 1000;
         }
 
         /* ========================================
@@ -469,6 +529,11 @@
     <div class="message">
         The Matrix has you...
         <div class="message-sub">Follow the white rabbit</div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+        Click the grid below to move
     </div>
 
     <!-- The World -->
